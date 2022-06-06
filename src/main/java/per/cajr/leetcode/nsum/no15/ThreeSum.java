@@ -1,4 +1,4 @@
-package per.cajr.leetcode.no15;
+package per.cajr.leetcode.nsum.no15;
 
 import java.util.*;
 

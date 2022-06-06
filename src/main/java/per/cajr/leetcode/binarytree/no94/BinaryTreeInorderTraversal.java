@@ -1,4 +1,6 @@
-package per.cajr.leetcode.binarytree;
+package per.cajr.leetcode.binarytree.no94;
+
+import per.cajr.leetcode.binarytree.TreeNode;
 
 import java.util.LinkedList;
 import java.util.List;

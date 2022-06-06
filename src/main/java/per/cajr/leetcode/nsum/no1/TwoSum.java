@@ -1,4 +1,4 @@
-package per.cajr.leetcode.no1;
+package per.cajr.leetcode.nsum.no1;
 
 
 import java.util.Arrays;
