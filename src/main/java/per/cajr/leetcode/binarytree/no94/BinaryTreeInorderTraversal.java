@@ -1,6 +1,7 @@
 package per.cajr.leetcode.binarytree.no94;
 
 import per.cajr.leetcode.binarytree.TreeNode;
+import per.cajr.leetcode.binarytree.no144.BinaryTreePreorderTraversal;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -94,6 +95,7 @@ public class BinaryTreeInorderTraversal {
         TreeNode root = new TreeNode(1, null, rightTree);
 
         System.out.println(new BinaryTreeInorderTraversal().inorderTraversal3(root));
+        System.out.println(new BinaryTreePreorderTraversal().preorderTraversal(root));
     }
 
 }
