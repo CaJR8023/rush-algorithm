@@ -1,6 +1,7 @@
 package per.cajr.leetcode.dfs.no51;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,35 +40,66 @@ public class NQueens {
     List<List<String>> nRes = new ArrayList<>();
 
     public List<List<String>> solveNQueens(int n) {
-        List<String> checkerboard = initCheckerboard(n);
+        char[][] checkerboard = new char[n][n];
+        for (char[] row : checkerboard) {
+            Arrays.fill(row, '.');
+        }
         solveQueen(checkerboard, 0);
-        return new ArrayList<>();
+        return nRes;
     }
 
-    private void solveQueen(List<String> checkerboard, int row) {
-        if (row == checkerboard.size()){
-            nRes.add(checkerboard);
-
+    private void solveQueen(char[][] checkerboard, int row) {
+        if (row == checkerboard.length) {
+            setRes(checkerboard);
+            return;
         }
-    }
-
-    private List<String> initCheckerboard(int n) {
-        List<String> checkerboard = new ArrayList<>();
-        if (n > 9) {
-            return checkerboard;
-        }
-        for (int i = 0; i < n; i++) {
-            StringBuilder checkerboardRow = new StringBuilder();
-            for (int j = 0; j < n; j++) {
-                checkerboardRow.append(".");
+        int n = checkerboard[row].length;
+        for (int j = 0; j < n; j++) {
+            if (!check(checkerboard, row, j)) {
+                continue;
             }
-            checkerboard.add(checkerboardRow.toString());
+            checkerboard[row][j] = 'Q';
+            solveQueen(checkerboard, row + 1);
+            checkerboard[row][j] = '.';
         }
-        return checkerboard;
+    }
+
+    private boolean check(char[][] checkerboard, int row, int col) {
+        // 上方
+        for (int i = 0; i < row; i++) {
+            if (checkerboard[i][col] == 'Q') {
+                return false;
+            }
+        }
+        //右上
+        for (int i = row - 1, j = col + 1; i >= 0 && j < checkerboard.length; i--, j++) {
+            if (checkerboard[i][j] == 'Q') {
+                return false;
+            }
+        }
+        //左上
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (checkerboard[i][j] == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void setRes(char[][] checkerboard) {
+        List<String> list = new ArrayList<>();
+        for (char[] rowCheckerboard : checkerboard) {
+            StringBuilder checkerboardRow = new StringBuilder();
+            for (char c : rowCheckerboard) {
+                checkerboardRow.append(c);
+            }
+            list.add(checkerboardRow.toString());
+        }
+        this.nRes.add(list);
     }
 
     public static void main(String[] args) {
-        int n = 3;
-        //System.out.println(new NQueens().solveNQueens(n));
+        int n = 2;
+        System.out.println(new NQueens().solveNQueens(n));
     }
 }
