@@ -53,7 +53,6 @@ public class CountOfSmallerNumbersAfterSelf {
         }
     }
 
-
     /**
      * 归并排序所用的辅助数组
      */
@@ -62,7 +61,6 @@ public class CountOfSmallerNumbersAfterSelf {
      * 记录每个元素后面比自己小的元素个数
      */
     private int[] count;
-
 
     public List<Integer> countSmaller(int[] nums) {
         List<Integer> res = new ArrayList<>();
