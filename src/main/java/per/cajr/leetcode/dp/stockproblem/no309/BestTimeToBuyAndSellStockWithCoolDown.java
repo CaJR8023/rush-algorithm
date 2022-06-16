@@ -33,16 +33,55 @@ package per.cajr.leetcode.dp.stockproblem.no309;
  */
 public class BestTimeToBuyAndSellStockWithCoolDown {
 
+    /**
+     * base case:
+     * dp[-1][0] = 0  dp[-1][1] = -infinity
+     * <p>
+     * 状态转移方程:
+     * dp[i][0] = max(dp[i-1][0], d[i-1][1]+prices[i])
+     * dp[i][1] = max(dp[i-1][1], d[i-2][0]-prices[i])
+     */
     public int maxProfit(int[] prices) {
         int days = prices.length;
-        if (days <= 0){
+        if (days <= 0) {
             return 0;
         }
+        int[][] dp = new int[days][2];
 
-        return 0;
+        for (int i = 0; i < days; i++) {
+            if (i - 1 == -1) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[0];
+                continue;
+            }
+            if (i - 2 == -1) {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+                dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 2][0] - prices[i]);
+
+        }
+
+        return dp[days - 1][0];
+    }
+
+    public int maxProfitOpt(int[] prices) {
+        //base case
+        int dpI0 = 0, dpI1 = Integer.MIN_VALUE, dpIPre0 = 0;
+        for (int p : prices) {
+            int temp = dpI0;
+            dpI0 = Math.max(dpI0, dpI1 + p);
+            dpI1 = Math.max(dpI1, dpIPre0 - p);
+            dpIPre0 = temp;
+        }
+        return dpI0;
     }
 
     public static void main(String[] args) {
-
+        int[] prices = {1, 2, 4};
+        System.out.println(new BestTimeToBuyAndSellStockWithCoolDown().maxProfit(prices));
+        System.out.println(new BestTimeToBuyAndSellStockWithCoolDown().maxProfitOpt(prices));
     }
 }

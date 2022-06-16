@@ -52,6 +52,11 @@ public class BestTimeToBuyAndSellStock4 {
         if (days <= 0){
             return 0;
         }
+        //k最多不超过天数二分之一,超过了k就没有限制意义了
+        if (K > days/2) {
+            return maxProfitNoKLimit(prices);
+        }
+
         //dp table
         int[][][] dp = new int[days][K + 1][2];
 
@@ -73,6 +78,17 @@ public class BestTimeToBuyAndSellStock4 {
             }
         }
         return dp[days - 1][K][0];
+    }
+
+    public int maxProfitNoKLimit(int[] prices) {
+        //base case
+        int dpI0 = 0, dpI1 = Integer.MIN_VALUE;
+        for (int p : prices) {
+            int temp = dpI0;
+            dpI0 = Math.max(dpI0, dpI1 + p);
+            dpI1 = Math.max(dpI1, temp - p);
+        }
+        return dpI0;
     }
 
 

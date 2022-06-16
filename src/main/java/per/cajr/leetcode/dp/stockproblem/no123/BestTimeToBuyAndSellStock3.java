@@ -36,16 +36,60 @@ package per.cajr.leetcode.dp.stockproblem.no123;
  */
 public class BestTimeToBuyAndSellStock3 {
 
+    /**
+     * base case:
+     * dp[-1][...][0] = dp[...][0][0] = 0
+     * dp[-1][...][1] = dp[...][0][1] = -infinity
+     * <p>
+     * 状态转移方程:
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     */
     public int maxProfit(int[] prices) {
         int days = prices.length;
-        if (days <= 0){
+        if (days <= 0) {
             return 0;
         }
+        int maxK = 2;
+        int[][][] dp = new int[days][maxK + 1][2];
+        for (int i = 0; i < days; i++) {
+            for (int k = maxK; k > 0; k--) {
+                if (i - 1 == -1) {
+                    dp[i][k][0] = 0;
+                    dp[i][k][1] = -prices[i];
+                    continue;
+                }
 
-        return 0;
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+            }
+        }
+        return dp[days - 1][maxK][0];
+    }
+
+    /**
+     * // 状态转移方程：
+     * // dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])
+     * // dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])
+     * // dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][1][1] + prices[i])
+     * // dp[i][1][1] = max(dp[i-1][1][1], -prices[i])
+     */
+    public int maxProfitOpt(int[] prices) {
+        int dpI10 = 0, dpI11 = Integer.MIN_VALUE;
+        int dpI20 = 0, dpI21 = Integer.MIN_VALUE;
+
+        for (int p : prices) {
+            dpI10 = Math.max(dpI10, dpI11 + p);
+            dpI11 = Math.max(dpI11, -p);
+            dpI20 = Math.max(dpI20, dpI21 + p);
+            dpI21 = Math.max(dpI21, dpI10 - p);
+        }
+        return dpI20;
     }
 
     public static void main(String[] args) {
-
+        int[] prices = {3, 3, 5, 0, 0, 3, 1, 4};
+        System.out.println(new BestTimeToBuyAndSellStock3().maxProfit(prices));
+        System.out.println(new BestTimeToBuyAndSellStock3().maxProfitOpt(prices));
     }
 }

@@ -33,4 +33,43 @@ package per.cajr.leetcode.dp.stockproblem.no714;
  * @author CAJR
  */
 public class BestTimeToBuyAndSellStockWithTransactionFee {
+
+    /**
+     * 相当于整个股价都高了fee
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int days = prices.length;
+        if (days <= 0) {
+            return 0;
+        }
+        int[][] dp = new int[days][2];
+        for (int i = 0; i < days; i++) {
+            if (i - 1 == -1) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i] - fee;
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i] - fee);
+        }
+
+        return dp[days - 1][0];
+    }
+
+    public int maxProfitOpt(int[] prices, int fee) {
+        int dpI0 = 0, dpI1 = Integer.MIN_VALUE;
+        for (int p : prices){
+            int temp = dpI0;
+            dpI0 = Math.max(dpI0, dpI1 + p);
+            dpI1 = Math.max(dpI1, temp - p - fee);
+        }
+        return dpI0;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {1, 3, 2, 8, 4, 9};
+        int fee = 2;
+        System.out.println(new BestTimeToBuyAndSellStockWithTransactionFee().maxProfit(prices, fee));
+        System.out.println(new BestTimeToBuyAndSellStockWithTransactionFee().maxProfitOpt(prices, fee));
+    }
 }
