@@ -1,5 +1,7 @@
 package per.cajr.leetcode.dp.stockproblem.no188;
 
+import java.util.Arrays;
+
 /**
  * 给定一个整数数组prices ，它的第 i 个元素prices[i] 是一支给定的股票在第 i 天的价格。
  * <p>
